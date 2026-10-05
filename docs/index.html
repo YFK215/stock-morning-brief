@@ -2,10 +2,159 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<title>股市晨報</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>股市晨報 2026-10-05</title>
+<style>
+  :root {
+    --bg: #0f1117; --card: #171a22; --text: #e8eaed; --muted: #9aa0a6;
+    --up: #ff5c5c; --down: #2ecc71; --accent: #5b8def; --border: #2a2d38;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.6; padding: 0 0 48px;
+  }
+  header { padding: 28px 20px 16px; max-width: 880px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 1.5rem; }
+  .sub { color: var(--muted); font-size: 0.9rem; }
+  main { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  section { margin-top: 28px; }
+  h2 { font-size: 1.05rem; border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; }
+  .up { color: var(--up); font-weight: 600; }
+  .down { color: var(--down); font-weight: 600; }
+  .cards { display: flex; gap: 10px; flex-wrap: wrap; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+           padding: 12px 16px; min-width: 130px; }
+  .card-label { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; }
+  .card-value { font-size: 1.15rem; font-weight: 600; }
+  .summary-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+                  padding: 16px 18px; font-size: 0.95rem; }
+  .badge { display: inline-block; font-size: 0.72rem; color: var(--muted); border: 1px solid var(--border);
+            border-radius: 20px; padding: 2px 10px; margin-bottom: 10px; }
+  ul { margin: 0; padding-left: 0; list-style: none; }
+  li { padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+  li a { color: var(--text); text-decoration: none; }
+  li a:hover { color: var(--accent); }
+  .src { display: block; color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+  footer { max-width: 880px; margin: 32px auto 0; padding: 0 20px; color: var(--muted); font-size: 0.78rem; }
+</style>
 </head>
-<body style="font-family:sans-serif;background:#0f1117;color:#e8eaed;padding:40px;">
-  <h1>股市晨報尚未產生</h1>
-  <p>這個頁面會在第一次 GitHub Actions 執行後自動被覆蓋。請到 Actions 分頁手動執行一次「股市晨報」工作流程測試。</p>
+<body>
+<header>
+  <h1>📈 股市晨報</h1>
+  <div class="sub">115年10月05日 ・ 產生時間 15:08 (台北時間)</div>
+</header>
+<main>
+
+  <section>
+    <h2>今日摘要</h2>
+    <div class="badge">規則式摘要</div>
+    <div class="summary-box">今日觀察族群中，「PCB/CCL」平均漲幅最高，約 +4.73%，主要由 欣興(+7.41%)、聯茂(+6.39%)、台光電(+4.22%) 領漲。 表現相對落後的是「AI/伺服器」，平均 -1.22%。 隔夜費半指數上漲 +2.40%，可留意台股半導體族群開盤反應。</div>
+  </section>
+
+  <section>
+    <h2>熱門族群排行（依觀察名單平均漲跌幅）</h2>
+    <table>
+      <thead><tr><th>#</th><th>族群</th><th>平均漲跌</th><th>領漲股</th></tr></thead>
+      <tbody><tr>
+          <td>1</td>
+          <td>PCB/CCL</td>
+          <td class="up">+4.73%</td>
+          <td>欣興(+7.41%) / 聯茂(+6.39%) / 台光電(+4.22%)</td>
+        </tr><tr>
+          <td>2</td>
+          <td>電動車</td>
+          <td class="up">+1.78%</td>
+          <td>聯茂(+6.39%) / 和大(+0.00%) / 台達電(-1.05%)</td>
+        </tr><tr>
+          <td>3</td>
+          <td>傳產/鋼鐵</td>
+          <td class="up">+1.62%</td>
+          <td>南亞(+2.36%) / 台塑(+2.25%) / 中鋼(+0.26%)</td>
+        </tr><tr>
+          <td>4</td>
+          <td>航運</td>
+          <td class="up">+0.94%</td>
+          <td>陽明(+1.53%) / 長榮(+0.84%) / 萬海(+0.44%)</td>
+        </tr><tr>
+          <td>5</td>
+          <td>半導體-晶圓/記憶體</td>
+          <td class="up">+0.72%</td>
+          <td>力積電(+2.68%) / 南亞科(+1.35%) / 旺宏(+0.83%)</td>
+        </tr><tr>
+          <td>6</td>
+          <td>重電/能源</td>
+          <td class="up">+0.17%</td>
+          <td>中興電(+0.60%) / 士電(-0.25%)</td>
+        </tr><tr>
+          <td>7</td>
+          <td>金融保險</td>
+          <td class="down">-0.17%</td>
+          <td>國泰金(+0.90%) / 富邦金(+0.00%) / 兆豐金(+0.00%)</td>
+        </tr><tr>
+          <td>8</td>
+          <td>散熱</td>
+          <td class="down">-0.39%</td>
+          <td>建準(+1.22%) / 奇鋐(-1.99%)</td>
+        </tr><tr>
+          <td>9</td>
+          <td>生技醫療</td>
+          <td class="down">-0.50%</td>
+          <td>藥華藥(-0.43%) / 美時(-0.56%)</td>
+        </tr><tr>
+          <td>10</td>
+          <td>半導體-IC設計</td>
+          <td class="down">-0.63%</td>
+          <td>台勝科(+0.32%) / 創意(+0.00%) / 聯發科(-0.60%)</td>
+        </tr><tr>
+          <td>11</td>
+          <td>AI/伺服器</td>
+          <td class="down">-1.22%</td>
+          <td>廣達(-0.60%) / 光寶科(-1.05%) / 鴻海(-1.18%)</td>
+        </tr></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>隔夜美股 / 費半</h2>
+    <div class="cards"><div class="card">
+          <div class="card-label">費城半導體指數</div>
+          <div class="card-value up">+2.40%</div>
+        </div><div class="card">
+          <div class="card-label">那斯達克</div>
+          <div class="card-value up">+1.19%</div>
+        </div><div class="card">
+          <div class="card-label">S&P 500</div>
+          <div class="card-value up">+0.73%</div>
+        </div><div class="card">
+          <div class="card-label">美元兌台幣</div>
+          <div class="card-value down">-0.40%</div>
+        </div></div>
+  </section>
+
+  <section>
+    <h2>今早財經新聞</h2>
+    <ul><li><a href="https://money.udn.com/money/story/5710/9795778" target="_blank" rel="noopener">創意營收／9月衝71.45億元再登峰！ 單月、單季雙創新高</a>
+          <span class="src">經濟日報(money.udn)</span></li><li><a href="https://money.udn.com/money/story/5710/9795758" target="_blank" rel="noopener">台光電營收／9月215.32億元創新高 前九月逾1,412億元</a>
+          <span class="src">經濟日報(money.udn)</span></li><li><a href="https://money.udn.com/money/story/11074/9795748" target="_blank" rel="noopener">伺服器 BBU 業務續強 AES 9月營收續創新高</a>
+          <span class="src">經濟日報(money.udn)</span></li><li><a href="https://money.udn.com/money/story/5710/9795739" target="_blank" rel="noopener">聯茂營收／9月58.24億元創新高 漲價效應與 AI 需求雙引擎</a>
+          <span class="src">經濟日報(money.udn)</span></li><li><a href="https://money.udn.com/money/story/11074/9795723" target="_blank" rel="noopener">智通科創營運報喜 股價收紅、終結三個交易日跌勢</a>
+          <span class="src">經濟日報(money.udn)</span></li><li><a href="https://money.udn.com/money/story/5607/9795681" target="_blank" rel="noopener">光輝十月近逼5萬 台股三力齊發價量揚 大盤4萬9712點刷新高</a>
+          <span class="src">經濟日報(money.udn)</span></li></ul>
+  </section>
+
+  <section>
+    <h2>法人說明會(法說會)</h2>
+    <ul><li>今日無法自動列出法說會清單，請參考 <a href='https://www.wantgoo.com/stock/calendar/investors-conference' target='_blank'>wantgoo 法說會行事曆</a> 或 <a href='https://irplatform.tdcc.com.tw/ir/zh/event/list' target='_blank'>集保結算所 IR 平台</a>。</li></ul>
+  </section>
+
+</main>
+<footer>
+  本頁由 GitHub Actions 自動產生，僅供個人參考，不構成投資建議。資料來源：證交所 OpenAPI、Yahoo Finance、各新聞網站 RSS。
+</footer>
 </body>
 </html>
