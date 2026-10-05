@@ -60,11 +60,13 @@ SECTOR_WATCHLIST = {
 }
 
 NEWS_FEEDS = [
-    ("工商時報", "https://ctee.com.tw/feed"),
     ("經濟日報(money.udn)", "https://money.udn.com/rssfeed/news/1001/5590?ch=money"),
-    ("MoneyDJ 理財網", "https://www.moneydj.com/kmdj/rss/newslistrss.ashx?svc=NR&a=MB01"),
-    ("鉅亨網台股", "https://news.cnyes.com/rss/cat/tw_stock_news"),
+    ("鉅亨網台股", "https://news.cnyes.com/rss/v1/news/category/tw_stock_news"),
+    ("Yahoo奇摩股市-台股市況", "https://tw.stock.yahoo.com/rss?category=tw-market"),
+    ("Yahoo奇摩股市-最新消息", "https://tw.stock.yahoo.com/rss?category=news"),
 ]
+# 註：工商時報(ctee.com.tw)、MoneyDJ 之前測試會被擋(403)或抓不到資料，先移除。
+# 之後想加新來源，把 (顯示名稱, RSS網址) 加進這個清單即可。
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
