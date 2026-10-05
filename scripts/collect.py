@@ -61,7 +61,7 @@ SECTOR_WATCHLIST = {
 
 NEWS_FEEDS = [
     ("經濟日報(money.udn)", "https://money.udn.com/rssfeed/news/1001/5590?ch=money"),
-    ("鉅亨網台股", "https://news.cnyes.com/rss/v1/news/category/tw_stock_news"),
+    ("鉅亨網頭條", "https://news.cnyes.com/rss/v1/news/category/headline"),
     ("Yahoo奇摩股市-台股市況", "https://tw.stock.yahoo.com/rss?category=tw-market"),
     ("Yahoo奇摩股市-最新消息", "https://tw.stock.yahoo.com/rss?category=news"),
 ]
