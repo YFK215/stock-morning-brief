@@ -11,6 +11,7 @@
 
 import json
 import os
+import re
 import sys
 import traceback
 from datetime import datetime, timedelta, timezone
@@ -211,6 +212,15 @@ def _pick_ir_table(soup):
     return soup.find("table")  # 找不到就退回第一個表格試試看
 
 
+# 不依賴特定 HTML 標籤結構，而是直接在整頁純文字裡找「代碼 名稱 日期 時間 法說會」
+# 這種固定格式的片段 —— 不管它實際包在 <table>、<li>、<div> 或 <h3> 裡都抓得到，
+# 比起鎖定特定標籤更不容易因為網站改版而失效。
+IR_EVENT_PATTERN = re.compile(
+    r"(\d{4,6})\s*([一-鿿A-Za-z0-9&\-]{1,12}?)\s*"
+    r"(\d{4}/\d{2}/\d{2})\s*(\d{2}:\d{2})\s*法說會"
+)
+
+
 def fetch_ir_events_tdcc():
     """主要來源：集保結算所(TDCC)投資人關係整合平台，官方機構網站，較不會擋自動化請求。"""
     headers = {
@@ -224,15 +234,17 @@ def fetch_ir_events_tdcc():
     resp.raise_for_status()
 
     soup = BeautifulSoup(resp.text, "html.parser")
-    headings = soup.find_all(["h3", "h4"])
-    log(f"TDCC 頁面共找到 {len(headings)} 個 h3/h4 標題")
+    page_text = soup.get_text(" ", strip=True)
+    log(f"TDCC 頁面純文字長度: {len(page_text)}")
 
+    seen = set()
     events = []
-    for h in headings:
-        text = h.get_text(" ", strip=True)
-        # 篩選出看起來像「日期 時間 ... 法說會」的標題列，排除網站導覽用的標題
-        if any(ch.isdigit() for ch in text) and ("法說" in text or "/" in text):
-            events.append(text)
+    for code, name, date, time_ in IR_EVENT_PATTERN.findall(page_text):
+        key = (code, date, time_)
+        if key in seen:
+            continue
+        seen.add(key)
+        events.append(f"{code} {name}　{date} {time_} 法說會")
 
     log(f"TDCC 成功解析出 {len(events)} 筆法說會資料")
     return events[:15]
