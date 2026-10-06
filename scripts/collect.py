@@ -211,48 +211,93 @@ def _pick_ir_table(soup):
     return soup.find("table")  # 找不到就退回第一個表格試試看
 
 
+def fetch_ir_events_tdcc():
+    """主要來源：集保結算所(TDCC)投資人關係整合平台，官方機構網站，較不會擋自動化請求。"""
+    headers = {
+        **HEADERS,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-TW,zh;q=0.9,en;q=0.8",
+        "Referer": IR_PLATFORM_LINK,
+    }
+    resp = requests.get(IR_PLATFORM_LINK, headers=headers, timeout=TIMEOUT)
+    log(f"TDCC 法說會頁面 HTTP 狀態碼: {resp.status_code}，內容長度: {len(resp.text)}")
+    resp.raise_for_status()
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    headings = soup.find_all(["h3", "h4"])
+    log(f"TDCC 頁面共找到 {len(headings)} 個 h3/h4 標題")
+
+    events = []
+    for h in headings:
+        text = h.get_text(" ", strip=True)
+        # 篩選出看起來像「日期 時間 ... 法說會」的標題列，排除網站導覽用的標題
+        if any(ch.isdigit() for ch in text) and ("法說" in text or "/" in text):
+            events.append(text)
+
+    log(f"TDCC 成功解析出 {len(events)} 筆法說會資料")
+    return events[:15]
+
+
+def fetch_ir_events_wantgoo():
+    """備援來源：wantgoo 法說會行事曆（表格形式）。"""
+    resp = requests.get(IR_CALENDAR_LINK, headers=IR_HEADERS, timeout=TIMEOUT)
+    log(f"wantgoo 法說會頁面 HTTP 狀態碼: {resp.status_code}，內容長度: {len(resp.text)}")
+    resp.raise_for_status()
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    all_tables = soup.find_all("table")
+    log(f"wantgoo 頁面上共找到 {len(all_tables)} 個 <table>")
+
+    table = _pick_ir_table(soup)
+    if table is None:
+        log("wantgoo 沒有找到任何表格")
+        return []
+
+    rows = table.find_all("tr")
+    log(f"wantgoo 選到的表格共有 {len(rows)} 列 (含表頭)")
+
+    events = []
+    for tr in rows:
+        cells = [td.get_text(" ", strip=True) for td in tr.find_all("td")]
+        cells = [c for c in cells if c]
+        if len(cells) < 2:
+            continue  # 表頭列或空列
+        code, name = cells[0], cells[1]
+        if not any(ch.isdigit() for ch in code):
+            continue  # 不是以股票代碼開頭的資料列，跳過（可能是表頭）
+        detail = cells[2] if len(cells) > 2 else ""
+        summary = cells[3] if len(cells) > 3 else ""
+        line = f"{code} {name}　{detail}"
+        if summary:
+            line += f"　— {summary[:40]}"
+        events.append(line)
+
+    log(f"wantgoo 成功解析出 {len(events)} 筆法說會資料")
+    return events[:15]
+
+
 def fetch_ir_events():
     if BeautifulSoup is None:
         log("BeautifulSoup 未安裝，略過法說會爬取，只保留連結")
         return []
+
     try:
-        resp = requests.get(IR_CALENDAR_LINK, headers=IR_HEADERS, timeout=TIMEOUT)
-        log(f"法說會頁面 HTTP 狀態碼: {resp.status_code}，內容長度: {len(resp.text)}")
-        resp.raise_for_status()
-
-        soup = BeautifulSoup(resp.text, "html.parser")
-        all_tables = soup.find_all("table")
-        log(f"頁面上共找到 {len(all_tables)} 個 <table>")
-
-        table = _pick_ir_table(soup)
-        if table is None:
-            log("沒有找到任何表格，法說會區塊改用連結")
-            return []
-
-        rows = table.find_all("tr")
-        log(f"選到的表格共有 {len(rows)} 列 (含表頭)")
-
-        events = []
-        for tr in rows:
-            cells = [td.get_text(" ", strip=True) for td in tr.find_all("td")]
-            cells = [c for c in cells if c]
-            if len(cells) < 2:
-                continue  # 表頭列或空列
-            code, name = cells[0], cells[1]
-            if not any(ch.isdigit() for ch in code):
-                continue  # 不是以股票代碼開頭的資料列，跳過（可能是表頭）
-            detail = cells[2] if len(cells) > 2 else ""
-            summary = cells[3] if len(cells) > 3 else ""
-            line = f"{code} {name}　{detail}"
-            if summary:
-                line += f"　— {summary[:40]}"
-            events.append(line)
-
-        log(f"成功解析出 {len(events)} 筆法說會資料")
-        return events[:15]
+        events = fetch_ir_events_tdcc()
+        if events:
+            return events
+        log("TDCC 沒有解析出任何資料，改試 wantgoo")
     except Exception as e:
-        log(f"法說會頁面抓取失敗: {e}")
-        return []
+        log(f"TDCC 法說會頁面抓取失敗: {e}，改試 wantgoo")
+
+    try:
+        events = fetch_ir_events_wantgoo()
+        if events:
+            return events
+        log("wantgoo 也沒有解析出任何資料，法說會區塊改用連結")
+    except Exception as e:
+        log(f"wantgoo 法說會頁面抓取失敗: {e}")
+
+    return []
 
 
 # ---------------------------------------------------------------------------
